@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function DetailsScreen() {
@@ -8,50 +8,49 @@ export default function DetailsScreen() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-//   useEffect(() => {
-//     const fetchProductData = async () => {
-//       if (!upc) return;
+  useEffect(() => {
+    const fetchProductData = async () => {
+      if (!upc) return;
       
-//       try {
-//         setLoading(true);
-//         setError(null);
+      try {
+        setLoading(true);
+        setError(null);
         
-//         // Get API key from environment variable
-//         const apiKey = process.env.API_KEY;
+        // Get API key from environment variable, or use demo key as fallback
+        const apiKey = process.env.API_KEY || 'DEMO_KEY';
         
-//         if (!apiKey) {
-//           throw new Error('API key not found in environment variables');
-//         }
+        if (!apiKey) {
+          throw new Error('API key not found in environment variables');
+        }
         
-//         // Replace this URL with your actual API endpoint
-//         const response = await fetch(`https://api.example.com/products/${upc}`, {
-//           headers: {
-//             'Authorization': `Bearer ${apiKey}`,
-//             'Content-Type': 'application/json',
-//           },
-//         });
+        const response = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?query=${upc}&api_key=DEMO_KEY`, {
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+          },
+        });
         
-//         if (!response.ok) {
-//           throw new Error(`HTTP error! status: ${response.status}`);
-//         }
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         
-//         const data = await response.json();
-//         setProductData(data);
-//       } catch (err) {
-//         setError(err instanceof Error ? err.message : 'An error occurred');
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
+        const data = await response.json();
+        setProductData(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-//     fetchProductData();
-//   }, [upc]);
+    fetchProductData();
+  }, [upc]);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Product Details for UPC: {upc}</Text>
       
-      {/* {loading && <Text style={styles.loading}>Loading...</Text>}
+      {loading && <Text style={styles.loading}>Loading...</Text>}
       
       {error && <Text style={styles.error}>Error: {error}</Text>}
       
@@ -59,7 +58,7 @@ export default function DetailsScreen() {
         <Text style={styles.data}>
           {JSON.stringify(productData, null, 2)}
         </Text>
-      )} */}
+      )}
     </View>
   );
 }

@@ -17,13 +17,13 @@ export default function DetailsScreen() {
         setError(null);
         
         // Get API key from environment variable, or use demo key as fallback
-        const apiKey = process.env.API_KEY || 'DEMO_KEY';
+        const apiKey = process.env.EXPO_PUBLIC_API_KEY || 'DEMO_KEY';
         
         if (!apiKey) {
           throw new Error('API key not found in environment variables');
         }
         
-        const response = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?query=${upc}&api_key=DEMO_KEY`, {
+        const response = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?query=${upc}&api_key=${apiKey}`, {
           headers: {
             'Authorization': `Bearer ${apiKey}`,
             'Content-Type': 'application/json',

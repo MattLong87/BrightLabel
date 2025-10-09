@@ -1,11 +1,20 @@
+import { useFocusEffect } from '@react-navigation/native';
 import { BarcodeScanningResult, CameraType, CameraView, useCameraPermissions } from 'expo-camera';
-import { useState } from 'react';
+import { useRouter } from 'expo-router';
+import { useCallback, useRef, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
-  const [barcode, setBarcode] = useState<string>('');
+  const barcodeDetected = useRef<boolean>(false);
+  const router = useRouter();
+
+  useFocusEffect(
+    useCallback(() => {
+      barcodeDetected.current = false;
+    }, [])
+  );
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -27,18 +36,20 @@ export default function App() {
   }
 
   function onBarcodeScanned(event: BarcodeScanningResult) {
-    console.log(event);
-    setBarcode(event.data);
+    if(barcodeDetected.current) {
+      return;
+    }
+    barcodeDetected.current = true;
+    return router.push(`/productinfo/${event.data}` as any);
   }
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing} barcodeScannerSettings={{ barcodeTypes: ["upc_a", "ean13"], }} onBarcodeScanned={onBarcodeScanned}/>
+      <CameraView style={styles.camera} facing={facing} barcodeScannerSettings={{ barcodeTypes: ["upc_a", "ean13"], }} onBarcodeScanned={onBarcodeScanned} />
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
           <Text style={styles.text}>Flip Camera</Text>
         </TouchableOpacity>
-        <Text style={styles.text}>{barcode}</Text>
       </View>
     </View>
   );

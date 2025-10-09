@@ -1,6 +1,8 @@
+import parseDataFromApi from '@/utilities/parseDataFromApi';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function DetailsScreen() {
   const { upc } = useLocalSearchParams();
@@ -11,31 +13,19 @@ export default function DetailsScreen() {
   useEffect(() => {
     const fetchProductData = async () => {
       if (!upc) return;
-      
+
       try {
         setLoading(true);
         setError(null);
-        
-        // Get API key from environment variable, or use demo key as fallback
-        const apiKey = process.env.EXPO_PUBLIC_API_KEY || 'DEMO_KEY';
-        
-        if (!apiKey) {
-          throw new Error('API key not found in environment variables');
-        }
-        
-        const response = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?query=${upc}&api_key=${apiKey}`, {
-          headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        
+
+        const response = await fetch(`https://world.openfoodfacts.org/api/v2/product/${upc}.json`);
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
-        setProductData(data);
+        setProductData(parseDataFromApi(data));
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -48,16 +38,54 @@ export default function DetailsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Product Details for UPC: {upc}</Text>
-      
+      <Text style={styles.upcNumber}>#{upc}</Text>
+
       {loading && <Text style={styles.loading}>Loading...</Text>}
-      
+
       {error && <Text style={styles.error}>Error: {error}</Text>}
-      
+
       {productData && !loading && !error && (
-        <Text style={styles.data}>
-          {JSON.stringify(productData, null, 2)}
-        </Text>
+        <SafeAreaView>
+          <ScrollView>
+            <View style={styles.productInfoContainer}>
+              <View>
+                <Text style={styles.label}>{productData.brand}</Text>
+                <Text style={styles.productName}>{productData.name}</Text>
+              </View>
+              <View>
+                <Text style={styles.label}>Serving Size</Text>
+                <Text style={styles.value}>{productData.servingSize}</Text>
+              </View>
+              <View style={styles.dataBoxContainer}>
+                <View style={styles.dataBox}>
+                  <Text style={styles.dataNumber}>{productData.caloriesPerServing}</Text>
+                  <Text style={styles.dataUnit}>Calories</Text>
+                </View>
+                <View style={styles.dataBox}>
+                  <Text style={styles.dataNumber}>{productData.carbohydratesPerServing}{productData.carbohydratesUnit}</Text>
+                  <Text style={styles.dataUnit}>Carbohydrates</Text>
+                </View>
+                <View style={styles.dataBox}>
+                  <Text style={styles.dataNumber}>{productData.proteinPerServing}{productData.proteinUnit}</Text>
+                  <Text style={styles.dataUnit}>Protein</Text>
+                </View>
+                <View style={styles.dataBox}>
+                  <Text style={styles.dataNumber}>{productData.fatPerServing}{productData.fatUnit}</Text>
+                  <Text style={styles.dataUnit}>Fat</Text>
+                </View>
+              </View>
+              {productData.topThreeVitamins.length > 0 && <View>
+                <Text style={styles.label}>Top Three Vitamins</Text>
+                {productData.topThreeVitamins.map((vitamin: any) => (
+                  <View style={styles.dataBox}>
+                    <Text style={styles.dataNumber}>{vitamin.amountPerServing}{vitamin.unit}</Text>
+                    <Text style={styles.dataUnit}>{vitamin.name}</Text>
+                  </View>
+                ))}
+              </View>}
+            </View>
+          </ScrollView>
+        </SafeAreaView>
       )}
     </View>
   );
@@ -69,11 +97,8 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
+  productInfoContainer: {
+    gap: 30,
   },
   loading: {
     fontSize: 16,
@@ -87,14 +112,54 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
   },
-  data: {
-    fontSize: 14,
-    color: '#333',
-    backgroundColor: '#f5f5f5',
-    padding: 15,
-    borderRadius: 8,
-    marginTop: 20,
-    fontFamily: 'monospace',
+  upcNumber: {
+    fontSize: 11,
+    color: '#666',
+    textAlign: 'right',
+  },
+  label: {
+    fontSize: 12,
+    color: '#666',
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+    letterSpacing: 1,
+  },
+  productName: {
+    fontSize: 24,
+    color: '#000',
+    textTransform: 'capitalize',
+    fontWeight: 'bold',
+  },
+  value: {
+    fontSize: 16,
+    color: '#000',
+  },
+  dataBoxContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    rowGap: 10,
+    columnGap: 10,
+  },
+  dataBox: {
+    flexBasis: '48%',
+    maxWidth: '48%',
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#666',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  dataNumber: {
+    fontSize: 20,
+    color: '#000',
+    fontWeight: 'bold',
+  },
+  dataUnit: {
+    fontSize: 12,
+    color: '#666',
+    fontWeight: 'bold',
   },
 });
 

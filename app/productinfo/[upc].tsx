@@ -3,6 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import DataBox from './components/DataBox';
 
 export default function DetailsScreen() {
   const { upc } = useLocalSearchParams();
@@ -38,7 +39,6 @@ export default function DetailsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.upcNumber}>#{upc}</Text>
 
       {loading && <Text style={styles.loading}>Loading...</Text>}
 
@@ -47,9 +47,10 @@ export default function DetailsScreen() {
       {productData && !loading && !error && (
         <SafeAreaView>
           <ScrollView>
+            <Text style={styles.upcNumber}>#{upc}</Text>
             <View style={styles.productInfoContainer}>
               <View>
-                <Text style={styles.label}>{productData.brand}</Text>
+                {productData.brand && <Text style={styles.label}>{productData.brand}</Text>}
                 <Text style={styles.productName}>{productData.name}</Text>
               </View>
               <View>
@@ -57,27 +58,15 @@ export default function DetailsScreen() {
                 <Text style={styles.value}>{productData.servingSize}</Text>
               </View>
               <View style={styles.dataBoxContainer}>
-                <View style={styles.dataBox}>
-                  <Text style={styles.dataNumber}>{productData.caloriesPerServing}</Text>
-                  <Text style={styles.dataUnit}>Calories</Text>
-                </View>
-                <View style={styles.dataBox}>
-                  <Text style={styles.dataNumber}>{productData.carbohydratesPerServing}{productData.carbohydratesUnit}</Text>
-                  <Text style={styles.dataUnit}>Carbohydrates</Text>
-                </View>
-                <View style={styles.dataBox}>
-                  <Text style={styles.dataNumber}>{productData.proteinPerServing}{productData.proteinUnit}</Text>
-                  <Text style={styles.dataUnit}>Protein</Text>
-                </View>
-                <View style={styles.dataBox}>
-                  <Text style={styles.dataNumber}>{productData.fatPerServing}{productData.fatUnit}</Text>
-                  <Text style={styles.dataUnit}>Fat</Text>
-                </View>
+                <DataBox label="Calories" unit='' amount={productData.caloriesPerServing} emoji="🔥" color="#ebcfb0" dailyValue={99} />
+                <DataBox label="Carbohydrates" unit={productData.carbohydratesUnit} amount={productData.carbohydratesPerServing} emoji="🍞" color="#e6ebb9" dailyValue={99} />
+                <DataBox label="Protein" unit={productData.proteinUnit} amount={productData.proteinPerServing} emoji="🍗" color="#fac7c2" dailyValue={99} />
+                <DataBox label="Fat" unit={productData.fatUnit} amount={productData.fatPerServing} emoji="🥑" color="#9fe89f" dailyValue={99} />
               </View>
               {productData.topThreeVitamins.length > 0 && <View>
                 <Text style={styles.label}>Top Three Vitamins</Text>
-                {productData.topThreeVitamins.map((vitamin: any) => (
-                  <View style={styles.dataBox}>
+                {productData.topThreeVitamins.map((vitamin: any, index: number) => (
+                  <View style={styles.dataBox} key={index}>
                     <Text style={styles.dataNumber}>{vitamin.amountPerServing}{vitamin.unit}</Text>
                     <Text style={styles.dataUnit}>{vitamin.name}</Text>
                   </View>
@@ -95,7 +84,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#d3edd0',
   },
   productInfoContainer: {
     gap: 30,
@@ -138,28 +127,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    rowGap: 10,
-    columnGap: 10,
   },
   dataBox: {
-    flexBasis: '48%',
-    maxWidth: '48%',
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#666',
-    padding: 10,
-    borderRadius: 5,
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   dataNumber: {
-    fontSize: 20,
+    fontSize: 16,
     color: '#000',
     fontWeight: 'bold',
   },
   dataUnit: {
-    fontSize: 12,
-    color: '#666',
-    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#000',
   },
 });
-

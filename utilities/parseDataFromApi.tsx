@@ -16,7 +16,7 @@ export default function parseDataFromApi(data: any) {
     const topThreeVitamins = vitaminInfo.sort((a, b) => b.amountPerServing - a.amountPerServing).slice(0, 3);
 
     const result = {
-        brand: product.brands.split(',')[0],
+        brand: product.brands ? product.brands.split(',')[0] : '',
         name: product.product_name,
         servingSize: product.serving_size,
         caloriesPerServing: nutrients['energy-kcal_serving'],

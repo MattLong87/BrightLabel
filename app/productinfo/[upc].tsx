@@ -49,35 +49,40 @@ export default function DetailsScreen() {
         <>
           <LinearGradient
             // Background Linear Gradient
-            colors={['#fbf7ee', '#e9daa9', ]}
+            colors={['#fbf7ee', '#e9daa9',]}
             style={styles.background}
           />
           <SafeAreaView>
             <ScrollView>
-              <Text style={styles.upcNumber}>UPC {upc}</Text>
               <View style={styles.productInfoContainer}>
+                <Text style={styles.upcNumber}>UPC {upc}</Text>
                 <View>
                   {productData.brand && <Text style={styles.brand}>{productData.brand}</Text>}
                   <Text style={styles.productName}>{productData.name}</Text>
                 </View>
-                <View style={styles.servingSizeContainer}>
-                  <Text style={styles.servingSizeLabel}>Serving Size</Text>
-                  <Text style={styles.servingSizeValue}>{productData.servingSize}</Text>
+                <View style={styles.horizontalInfoContainer}>
+                  <Text style={styles.horizontalInfoLabel}>Serving Size</Text>
+                  <Text style={styles.horiztonalInfoValue}>{productData.servingSize}</Text>
                 </View>
                 <View style={styles.dataBoxContainer}>
-                  <DataBox label="Calories" unit='' amount={productData.caloriesPerServing} emoji="🔥" color="#ebcfb0" dailyValue={0} />
+                  <DataBox label="Calories" unit='kcal' amount={productData.caloriesPerServing} emoji="🔥" color="#ebcfb0" dailyValue={0} />
                   <DataBox label="Carbohydrates" unit={productData.carbohydratesUnit} amount={productData.carbohydratesPerServing} emoji="🍞" color="#f4ecd2" dailyValue={productData.carbohydratesDailyValue} />
                   <DataBox label="Protein" unit={productData.proteinUnit} amount={productData.proteinPerServing} emoji="🍗" color="#f9e9e8" dailyValue={productData.proteinDailyValue} />
                   <DataBox label="Fat" unit={productData.fatUnit} amount={productData.fatPerServing} emoji="🥑" color="#e6f6e6" dailyValue={productData.fatDailyValue} />
                 </View>
-                {productData.topThreeVitamins.length > 0 && <View>
-                  <Text style={styles.brand}>Top Three Vitamins</Text>
-                  {productData.topThreeVitamins.map((vitamin: any, index: number) => (
-                    <View key={index}>
-                      <Text>{vitamin.amountPerServing}{vitamin.unit}</Text>
-                      <Text>{vitamin.name}</Text>
-                    </View>
-                  ))}
+                {productData.topVitamins.length > 0 && <View>
+                  <Text style={styles.brand}>Top Vitamins</Text>
+                  <View style={styles.vitaminsContainer}>
+                    {productData.topVitamins.map((vitamin: any, index: number) => (
+                      <View key={index} style={styles.horizontalInfoContainer}>
+                        <Text style={styles.horizontalInfoLabel}>{vitamin.name}</Text>
+                        <View>
+                          <Text style={styles.horiztonalInfoValue}>{vitamin.amountPerServing} {vitamin.unit}</Text>
+                          <Text style={styles.horiztonalInfoDailyValue}>{vitamin.percentageDailyValue.toFixed(2)}% Daily Value</Text>
+                        </View>
+                      </View>
+                    ))}
+                  </View>
                 </View>}
               </View>
             </ScrollView>
@@ -120,7 +125,7 @@ const styles = StyleSheet.create({
     color: '#666',
     textAlign: 'right',
   },
-  servingSizeContainer: {
+  horizontalInfoContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -131,12 +136,18 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     borderRadius: 20,
   },
-  servingSizeLabel: {
+  horizontalInfoLabel: {
     fontSize: 14,
     fontWeight: 'bold',
   },
-  servingSizeValue: {
-    fontSize: 14,
+  horiztonalInfoValue: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'right',
+  },
+  horiztonalInfoDailyValue: {
+    fontSize: 10,
+    textAlign: 'right',
   },
   brand: {
     fontSize: 12,
@@ -156,5 +167,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginLeft: -5,
     marginRight: -5,
+  },
+  vitaminsContainer: {
+    gap: 10,
+    marginTop: 10,
   },
 });

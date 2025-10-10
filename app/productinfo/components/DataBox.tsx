@@ -17,8 +17,8 @@ export default function DataBox({ label, unit, amount, emoji, color, dailyValue 
                     <View style={[styles.icon, { backgroundColor: color }]}><Text style={styles.iconText}>{emoji}</Text></View>
                     <View><Text style={styles.label}>{label}</Text></View>
                 </View>
-                <Text style={styles.amount}>{amount}{unit}</Text>
-                <Text style={styles.dailyValue}>{dailyValue}% Daily Value</Text>
+                <Text style={styles.amount}>{amount}{unit==='kcal' ? ' ' : ''}{unit}</Text>
+                {dailyValue > 0 ? <Text style={styles.dailyValue}>{dailyValue}% Daily Value</Text> : <View style={{height: 13}} />}
             </View>
         </View>
     )

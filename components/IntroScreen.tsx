@@ -1,4 +1,5 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import PrimaryButton from "@/components/PrimaryButton";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 export default function IntroScreen({ requestPermission }: { requestPermission: () => void }) {
     return (
@@ -6,7 +7,7 @@ export default function IntroScreen({ requestPermission }: { requestPermission: 
             <View style={styles.logoContainer}><Image source={require('@/assets/images/icon.png')} style={styles.logo} /><Text style={styles.title}>BrightLabel</Text></View>
             <View style={styles.imageContainer}><Image source={require('@/assets/images/phone-line-drawing.png')} style={styles.image} /></View>
             <Text style={styles.description}>BrightLabel uses your phone's camera to scan barcodes on food packages and instantly show you clear nutrition facts.</Text>
-            <TouchableOpacity style={styles.button} onPress={requestPermission}><Text style={styles.buttonText}>Get Started</Text></TouchableOpacity>
+            <View style={styles.buttonContainer}><PrimaryButton title="Get Started" onPress={requestPermission} /></View>
         </View>
     )
 }
@@ -49,20 +50,10 @@ const styles = StyleSheet.create({
         maxWidth: '84%',
         textAlign: 'justify',
     },
-    button: {
+    buttonContainer: {
         position: 'absolute',
         bottom: 32,
         left: 32,
         right: 32,
-        padding: 20,
-        borderRadius: 24,
-        backgroundColor: '#ecad00',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    buttonText: {
-        color: 'white',
-        fontSize: 20,
-        fontWeight: 'bold',
     },
 });

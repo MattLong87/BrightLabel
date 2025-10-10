@@ -1,6 +1,7 @@
 import PrimaryButton from '@/components/PrimaryButton';
 import ProductInfoSkeleton from '@/components/ProductInfoSkeleton';
 import parseDataFromApi from '@/utilities/parseDataFromApi';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -42,85 +43,96 @@ export default function DetailsScreen() {
         fetchProductData();
     }, [upc]);
 
-    if (loading) {
-        return <ProductInfoSkeleton />;
-    }
+    async function saveProduct() {
+        try {
+            const savedProducts = await AsyncStorage.getItem('savedProducts');
+            const savedProductsArray = savedProducts ? JSON.parse(savedProducts) : [];
+            savedProductsArray.push(productData);
+            await AsyncStorage.setItem('savedProducts', JSON.stringify(savedProductsArray));
+            router.push('/savedproducts');
+        } catch (e) {
+            // saving error
+            console.log(e);
+        }
+    };
 
-    if (error) {
-        return (
-            <View style={styles.errorContainer}>
+if (loading) {
+    return <ProductInfoSkeleton />;
+}
+
+if (error) {
+    return (
+        <View style={styles.errorContainer}>
+            <LinearGradient
+                // Background Linear Gradient
+                colors={['#fbf7ee', '#e9daa9',]}
+                style={styles.background}
+            />
+            <View style={styles.errorTextContainer}>
+                <Text style={styles.errorTitle}>Sorry, we don't have any data for this product</Text>
+                <Text style={styles.errorText}>{error}</Text>
+            </View>
+            <View style={styles.errorButtonContainer}>
+                <PrimaryButton title="Scan Another Product" onPress={() => {
+                    setError(null);
+                    setLoading(true);
+                    router.push('/');
+                }} />
+            </View>
+        </View>
+    )
+}
+
+return (
+    <View style={styles.container}>
+
+        {productData && !loading && !error && (
+            <>
                 <LinearGradient
                     // Background Linear Gradient
                     colors={['#fbf7ee', '#e9daa9',]}
                     style={styles.background}
                 />
-                <View style={styles.errorTextContainer}>
-                    <Text style={styles.errorTitle}>Sorry, we don't have any data for this product</Text>
-                    <Text style={styles.errorText}>{error}</Text>
-                </View>
-                <View style={styles.errorButtonContainer}>
-                    <PrimaryButton title="Scan Another Product" onPress={() => {
-                        setError(null);
-                        setLoading(true);
-                        router.push('/');
-                    }} />
-                </View>
-            </View>
-        )
-    }
-
-    return (
-        <View style={styles.container}>
-
-            {productData && !loading && !error && (
-                <>
-                    <LinearGradient
-                        // Background Linear Gradient
-                        colors={['#fbf7ee', '#e9daa9',]}
-                        style={styles.background}
-                    />
-                    <ScrollView>
-                        <SafeAreaView>
-                            <View style={styles.productInfoContainer}>
-                                <Text style={styles.upcNumber}>UPC {upc}</Text>
-                                <View>
-                                    {productData.brand && <Text style={styles.brand}>{productData.brand}</Text>}
-                                    <Text style={styles.productName}>{productData.name}</Text>
-                                </View>
-                                <View style={styles.horizontalInfoContainer}>
-                                    <Text style={styles.horizontalInfoLabel}>Serving Size</Text>
-                                    <Text style={styles.horiztonalInfoValue}>{productData.servingSize}</Text>
-                                </View>
-                                <View style={styles.dataBoxContainer}>
-                                    <DataBox label="Calories" unit='kcal' amount={productData.caloriesPerServing} emoji="🔥" color="#ebcfb0" dailyValue={0} countDuration={1} />
-                                    <DataBox label="Carbohydrates" unit={productData.carbohydratesUnit} amount={productData.carbohydratesPerServing} emoji="🍞" color="#f4ecd2" dailyValue={productData.carbohydratesDailyValue} countDuration={2} />
-                                    <DataBox label="Protein" unit={productData.proteinUnit} amount={productData.proteinPerServing} emoji="🍗" color="#f9e9e8" dailyValue={productData.proteinDailyValue} countDuration={3} />
-                                    <DataBox label="Fat" unit={productData.fatUnit} amount={productData.fatPerServing} emoji="🥑" color="#e6f6e6" dailyValue={productData.fatDailyValue} countDuration={4} />
-                                </View>
-                                {productData.topVitamins.length > 0 && <View>
-                                    <Text style={styles.brand}>Top Vitamins</Text>
-                                    <View style={styles.vitaminsContainer}>
-                                        {productData.topVitamins.map((vitamin: any, index: number) => (
-                                            <View key={index} style={styles.horizontalInfoContainer}>
-                                                <Text style={styles.horizontalInfoLabel}>{vitamin.name}</Text>
-                                                <View style={styles.horiztonalInfoData}>
-                                                    <Text style={styles.horiztonalInfoValue}>{vitamin.amountPerServing}{vitamin.unit}</Text>
-                                                    <DailyValue dailyValue={vitamin.percentageDailyValue.toFixed(2)} />
-                                                </View>
-                                            </View>
-                                        ))}
-                                    </View>
-                                </View>}
-                                <PrimaryButton title="Save Product" onPress={() => {
-                                    router.push('/savedproducts');
-                                }} />
+                <ScrollView>
+                    <SafeAreaView>
+                        <View style={styles.productInfoContainer}>
+                            <Text style={styles.upcNumber}>UPC {upc}</Text>
+                            <View>
+                                {productData.brand && <Text style={styles.brand}>{productData.brand}</Text>}
+                                <Text style={styles.productName}>{productData.name}</Text>
                             </View>
-                        </SafeAreaView>
-                    </ScrollView>
-                </>
-            )}
-        </View>
-    );
+                            <View style={styles.horizontalInfoContainer}>
+                                <Text style={styles.horizontalInfoLabel}>Serving Size</Text>
+                                <Text style={styles.horiztonalInfoValue}>{productData.servingSize}</Text>
+                            </View>
+                            <View style={styles.dataBoxContainer}>
+                                <DataBox label="Calories" unit='kcal' amount={productData.caloriesPerServing} emoji="🔥" color="#ebcfb0" dailyValue={0} countDuration={1} />
+                                <DataBox label="Carbohydrates" unit={productData.carbohydratesUnit} amount={productData.carbohydratesPerServing} emoji="🍞" color="#f4ecd2" dailyValue={productData.carbohydratesDailyValue} countDuration={2} />
+                                <DataBox label="Protein" unit={productData.proteinUnit} amount={productData.proteinPerServing} emoji="🍗" color="#f9e9e8" dailyValue={productData.proteinDailyValue} countDuration={3} />
+                                <DataBox label="Fat" unit={productData.fatUnit} amount={productData.fatPerServing} emoji="🥑" color="#e6f6e6" dailyValue={productData.fatDailyValue} countDuration={4} />
+                            </View>
+                            {productData.topVitamins.length > 0 && <View>
+                                <Text style={styles.brand}>Top Vitamins</Text>
+                                <View style={styles.vitaminsContainer}>
+                                    {productData.topVitamins.map((vitamin: any, index: number) => (
+                                        <View key={index} style={styles.horizontalInfoContainer}>
+                                            <Text style={styles.horizontalInfoLabel}>{vitamin.name}</Text>
+                                            <View style={styles.horiztonalInfoData}>
+                                                <Text style={styles.horiztonalInfoValue}>{vitamin.amountPerServing}{vitamin.unit}</Text>
+                                                <DailyValue dailyValue={vitamin.percentageDailyValue.toFixed(2)} />
+                                            </View>
+                                        </View>
+                                    ))}
+                                </View>
+                            </View>}
+                            <PrimaryButton title="Save Product" onPress={saveProduct} />
+                        </View>
+                    </SafeAreaView>
+                </ScrollView>
+            </>
+        )}
+    </View>
+);
 }
 
 const styles = StyleSheet.create({

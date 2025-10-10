@@ -80,8 +80,7 @@ export default function DetailsScreen() {
                         style={styles.background}
                     />
                     <ScrollView>
-                    <SafeAreaView>
-                        
+                        <SafeAreaView>
                             <View style={styles.productInfoContainer}>
                                 <Text style={styles.upcNumber}>UPC {upc}</Text>
                                 <View>
@@ -112,6 +111,9 @@ export default function DetailsScreen() {
                                         ))}
                                     </View>
                                 </View>}
+                                <PrimaryButton title="Save Product" onPress={() => {
+                                    router.push('/savedproducts');
+                                }} />
                             </View>
                         </SafeAreaView>
                     </ScrollView>

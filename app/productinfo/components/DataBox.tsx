@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { CountUp } from 'use-count-up';
+import DailyValue from './DailyValue';
 
 type DataBoxProps = {
     label: string;
@@ -19,8 +20,10 @@ export default function DataBox({ label, unit, amount, emoji, color, dailyValue,
                     <View style={[styles.icon, { backgroundColor: color }]}><Text style={styles.iconText}>{emoji}</Text></View>
                     <View><Text style={styles.label}>{label}</Text></View>
                 </View>
-                <Text style={styles.amount}><CountUp isCounting end={amount} duration={countDuration} />{unit==='kcal' ? ' ' : ''}{unit}</Text>
-                {dailyValue > 0 ? <Text style={styles.dailyValue}>{dailyValue}% Daily Value</Text> : <View style={{height: 13}} />}
+                <View style={styles.amountContainer}>
+                    <Text style={styles.amount}><CountUp isCounting end={amount} duration={countDuration} />{unit === 'kcal' ? ' ' : ''}{unit}</Text>
+                    <DailyValue dailyValue={dailyValue} />
+                </View>
             </View>
         </View>
     )
@@ -57,6 +60,11 @@ const styles = StyleSheet.create({
         gap: 8,
         alignItems: 'center',
     },
+    amountContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
     amount: {
         fontSize: 24,
         color: '#000',
@@ -67,10 +75,16 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontWeight: '500',
         color: '#000',
-    },  
+    },
     dailyValue: {
-        fontSize: 10,
+        fontSize: 11,
         color: '#000',
-        paddingLeft: 3
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 5,
+        paddingBottom: 5,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: '#d4bf81',
     },
 });

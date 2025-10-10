@@ -4,6 +4,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import DailyValue from './components/DailyValue';
 import DataBox from './components/DataBox';
 
 export default function DetailsScreen() {
@@ -76,9 +77,9 @@ export default function DetailsScreen() {
                     {productData.topVitamins.map((vitamin: any, index: number) => (
                       <View key={index} style={styles.horizontalInfoContainer}>
                         <Text style={styles.horizontalInfoLabel}>{vitamin.name}</Text>
-                        <View>
-                          <Text style={styles.horiztonalInfoValue}>{vitamin.amountPerServing} {vitamin.unit}</Text>
-                          <Text style={styles.horiztonalInfoDailyValue}>{vitamin.percentageDailyValue.toFixed(2)}% Daily Value</Text>
+                        <View style={styles.horiztonalInfoData}>
+                          <Text style={styles.horiztonalInfoValue}>{vitamin.amountPerServing}{vitamin.unit}</Text>
+                          <DailyValue dailyValue={vitamin.percentageDailyValue.toFixed(2)} />
                         </View>
                       </View>
                     ))}
@@ -122,7 +123,6 @@ const styles = StyleSheet.create({
   },
   upcNumber: {
     fontSize: 11,
-    color: '#666',
     textAlign: 'right',
   },
   horizontalInfoContainer: {
@@ -130,8 +130,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#ffffffaa',
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 16,
+    paddingRight: 16,
     paddingTop: 16,
     paddingBottom: 16,
     borderRadius: 20,
@@ -139,6 +139,12 @@ const styles = StyleSheet.create({
   horizontalInfoLabel: {
     fontSize: 14,
     fontWeight: 'bold',
+  },
+  horiztonalInfoData: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 10,
   },
   horiztonalInfoValue: {
     fontSize: 16,

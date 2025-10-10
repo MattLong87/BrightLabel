@@ -54,7 +54,7 @@ export default function DetailsScreen() {
           />
           <SafeAreaView>
             <ScrollView>
-              <Text style={styles.upcNumber}>#{upc}</Text>
+              <Text style={styles.upcNumber}>UPC {upc}</Text>
               <View style={styles.productInfoContainer}>
                 <View>
                   {productData.brand && <Text style={styles.brand}>{productData.brand}</Text>}
@@ -65,10 +65,10 @@ export default function DetailsScreen() {
                   <Text style={styles.servingSizeValue}>{productData.servingSize}</Text>
                 </View>
                 <View style={styles.dataBoxContainer}>
-                  <DataBox label="Calories" unit='' amount={productData.caloriesPerServing} emoji="🔥" color="#ebcfb0" dailyValue={99} />
-                  <DataBox label="Carbohydrates" unit={productData.carbohydratesUnit} amount={productData.carbohydratesPerServing} emoji="🍞" color="#f4ecd2" dailyValue={99} />
-                  <DataBox label="Protein" unit={productData.proteinUnit} amount={productData.proteinPerServing} emoji="🍗" color="#f9e9e8" dailyValue={99} />
-                  <DataBox label="Fat" unit={productData.fatUnit} amount={productData.fatPerServing} emoji="🥑" color="#e6f6e6" dailyValue={99} />
+                  <DataBox label="Calories" unit='' amount={productData.caloriesPerServing} emoji="🔥" color="#ebcfb0" dailyValue={0} />
+                  <DataBox label="Carbohydrates" unit={productData.carbohydratesUnit} amount={productData.carbohydratesPerServing} emoji="🍞" color="#f4ecd2" dailyValue={productData.carbohydratesDailyValue} />
+                  <DataBox label="Protein" unit={productData.proteinUnit} amount={productData.proteinPerServing} emoji="🍗" color="#f9e9e8" dailyValue={productData.proteinDailyValue} />
+                  <DataBox label="Fat" unit={productData.fatUnit} amount={productData.fatPerServing} emoji="🥑" color="#e6f6e6" dailyValue={productData.fatDailyValue} />
                 </View>
                 {productData.topThreeVitamins.length > 0 && <View>
                   <Text style={styles.brand}>Top Three Vitamins</Text>

@@ -79,8 +79,9 @@ export default function DetailsScreen() {
                         colors={['#fbf7ee', '#e9daa9',]}
                         style={styles.background}
                     />
+                    <ScrollView>
                     <SafeAreaView>
-                        <ScrollView>
+                        
                             <View style={styles.productInfoContainer}>
                                 <Text style={styles.upcNumber}>UPC {upc}</Text>
                                 <View>
@@ -112,8 +113,8 @@ export default function DetailsScreen() {
                                     </View>
                                 </View>}
                             </View>
-                        </ScrollView>
-                    </SafeAreaView>
+                        </SafeAreaView>
+                    </ScrollView>
                 </>
             )}
         </View>

@@ -18,7 +18,7 @@ export default function DataBox({ label, unit, amount, emoji, color, dailyValue 
                     <View><Text style={styles.label}>{label}</Text></View>
                 </View>
                 <Text style={styles.amount}>{amount}{unit}</Text>
-                <Text>{dailyValue} Daily Value</Text>
+                <Text style={styles.dailyValue}>{dailyValue}% Daily Value</Text>
             </View>
         </View>
     )
@@ -33,33 +33,42 @@ const styles = StyleSheet.create({
     boxContents: {
         gap: 6,
         backgroundColor: '#ffffffaa',
-        padding: 12,
-        borderRadius: 20,
+        paddingLeft: 13,
+        paddingRight: 13,
+        paddingTop: 13,
+        paddingBottom: 18,
+        borderRadius: 24,
     },
     icon: {
         color: '#000',
         borderRadius: 50,
-        padding: 5,
+        padding: 7,
         alignItems: 'center',
         justifyContent: 'center',
     },
     iconText: {
-        fontSize: 18,
+        fontSize: 20,
     },
     header: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        gap: 10,
+        gap: 8,
         alignItems: 'center',
     },
     amount: {
         fontSize: 24,
         color: '#000',
         fontWeight: 'bold',
+        paddingLeft: 3
     },
     label: {
-        fontSize: 12,
-        fontWeight: 'bold',
+        fontSize: 13,
+        fontWeight: '500',
         color: '#000',
+    },  
+    dailyValue: {
+        fontSize: 10,
+        color: '#000',
+        paddingLeft: 3
     },
 });

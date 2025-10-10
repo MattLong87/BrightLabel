@@ -1,4 +1,5 @@
 import parseDataFromApi from '@/utilities/parseDataFromApi';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -45,46 +46,59 @@ export default function DetailsScreen() {
       {error && <Text style={styles.error}>Error: {error}</Text>}
 
       {productData && !loading && !error && (
-        <SafeAreaView>
-          <ScrollView>
-            <Text style={styles.upcNumber}>#{upc}</Text>
-            <View style={styles.productInfoContainer}>
-              <View>
-                {productData.brand && <Text style={styles.label}>{productData.brand}</Text>}
-                <Text style={styles.productName}>{productData.name}</Text>
+        <>
+          <LinearGradient
+            // Background Linear Gradient
+            colors={['#fbf7ee', '#e9daa9', ]}
+            style={styles.background}
+          />
+          <SafeAreaView>
+            <ScrollView>
+              <Text style={styles.upcNumber}>#{upc}</Text>
+              <View style={styles.productInfoContainer}>
+                <View>
+                  {productData.brand && <Text style={styles.brand}>{productData.brand}</Text>}
+                  <Text style={styles.productName}>{productData.name}</Text>
+                </View>
+                <View style={styles.servingSizeContainer}>
+                  <Text style={styles.servingSizeLabel}>Serving Size</Text>
+                  <Text style={styles.servingSizeValue}>{productData.servingSize}</Text>
+                </View>
+                <View style={styles.dataBoxContainer}>
+                  <DataBox label="Calories" unit='' amount={productData.caloriesPerServing} emoji="🔥" color="#ebcfb0" dailyValue={99} />
+                  <DataBox label="Carbohydrates" unit={productData.carbohydratesUnit} amount={productData.carbohydratesPerServing} emoji="🍞" color="#f4ecd2" dailyValue={99} />
+                  <DataBox label="Protein" unit={productData.proteinUnit} amount={productData.proteinPerServing} emoji="🍗" color="#f9e9e8" dailyValue={99} />
+                  <DataBox label="Fat" unit={productData.fatUnit} amount={productData.fatPerServing} emoji="🥑" color="#e6f6e6" dailyValue={99} />
+                </View>
+                {productData.topThreeVitamins.length > 0 && <View>
+                  <Text style={styles.brand}>Top Three Vitamins</Text>
+                  {productData.topThreeVitamins.map((vitamin: any, index: number) => (
+                    <View key={index}>
+                      <Text>{vitamin.amountPerServing}{vitamin.unit}</Text>
+                      <Text>{vitamin.name}</Text>
+                    </View>
+                  ))}
+                </View>}
               </View>
-              <View>
-                <Text style={styles.label}>Serving Size</Text>
-                <Text style={styles.value}>{productData.servingSize}</Text>
-              </View>
-              <View style={styles.dataBoxContainer}>
-                <DataBox label="Calories" unit='' amount={productData.caloriesPerServing} emoji="🔥" color="#ebcfb0" dailyValue={99} />
-                <DataBox label="Carbohydrates" unit={productData.carbohydratesUnit} amount={productData.carbohydratesPerServing} emoji="🍞" color="#e6ebb9" dailyValue={99} />
-                <DataBox label="Protein" unit={productData.proteinUnit} amount={productData.proteinPerServing} emoji="🍗" color="#fac7c2" dailyValue={99} />
-                <DataBox label="Fat" unit={productData.fatUnit} amount={productData.fatPerServing} emoji="🥑" color="#9fe89f" dailyValue={99} />
-              </View>
-              {productData.topThreeVitamins.length > 0 && <View>
-                <Text style={styles.label}>Top Three Vitamins</Text>
-                {productData.topThreeVitamins.map((vitamin: any, index: number) => (
-                  <View style={styles.dataBox} key={index}>
-                    <Text style={styles.dataNumber}>{vitamin.amountPerServing}{vitamin.unit}</Text>
-                    <Text style={styles.dataUnit}>{vitamin.name}</Text>
-                  </View>
-                ))}
-              </View>}
-            </View>
-          </ScrollView>
-        </SafeAreaView>
+            </ScrollView>
+          </SafeAreaView>
+        </>
       )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0
+  },
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#d3edd0',
   },
   productInfoContainer: {
     gap: 30,
@@ -106,9 +120,26 @@ const styles = StyleSheet.create({
     color: '#666',
     textAlign: 'right',
   },
-  label: {
+  servingSizeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#ffffffaa',
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 16,
+    paddingBottom: 16,
+    borderRadius: 20,
+  },
+  servingSizeLabel: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  servingSizeValue: {
+    fontSize: 14,
+  },
+  brand: {
     fontSize: 12,
-    color: '#666',
     textTransform: 'uppercase',
     fontWeight: 'bold',
     letterSpacing: 1,
@@ -119,27 +150,11 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
     fontWeight: 'bold',
   },
-  value: {
-    fontSize: 16,
-    color: '#000',
-  },
   dataBoxContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-  },
-  dataBox: {
-    flexDirection: 'row-reverse',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  dataNumber: {
-    fontSize: 16,
-    color: '#000',
-    fontWeight: 'bold',
-  },
-  dataUnit: {
-    fontSize: 16,
-    color: '#000',
+    marginLeft: -5,
+    marginRight: -5,
   },
 });

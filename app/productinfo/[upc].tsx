@@ -65,10 +65,10 @@ export default function DetailsScreen() {
                   <Text style={styles.horiztonalInfoValue}>{productData.servingSize}</Text>
                 </View>
                 <View style={styles.dataBoxContainer}>
-                  <DataBox label="Calories" unit='kcal' amount={productData.caloriesPerServing} emoji="🔥" color="#ebcfb0" dailyValue={0} />
-                  <DataBox label="Carbohydrates" unit={productData.carbohydratesUnit} amount={productData.carbohydratesPerServing} emoji="🍞" color="#f4ecd2" dailyValue={productData.carbohydratesDailyValue} />
-                  <DataBox label="Protein" unit={productData.proteinUnit} amount={productData.proteinPerServing} emoji="🍗" color="#f9e9e8" dailyValue={productData.proteinDailyValue} />
-                  <DataBox label="Fat" unit={productData.fatUnit} amount={productData.fatPerServing} emoji="🥑" color="#e6f6e6" dailyValue={productData.fatDailyValue} />
+                  <DataBox label="Calories" unit='kcal' amount={productData.caloriesPerServing} emoji="🔥" color="#ebcfb0" dailyValue={0} countDuration={1} />
+                  <DataBox label="Carbohydrates" unit={productData.carbohydratesUnit} amount={productData.carbohydratesPerServing} emoji="🍞" color="#f4ecd2" dailyValue={productData.carbohydratesDailyValue} countDuration={2} />
+                  <DataBox label="Protein" unit={productData.proteinUnit} amount={productData.proteinPerServing} emoji="🍗" color="#f9e9e8" dailyValue={productData.proteinDailyValue} countDuration={3} />
+                  <DataBox label="Fat" unit={productData.fatUnit} amount={productData.fatPerServing} emoji="🥑" color="#e6f6e6" dailyValue={productData.fatDailyValue} countDuration={4} />
                 </View>
                 {productData.topVitamins.length > 0 && <View>
                   <Text style={styles.brand}>Top Vitamins</Text>

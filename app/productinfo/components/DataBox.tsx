@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { CountUp } from 'use-count-up';
 
 type DataBoxProps = {
     label: string;
@@ -7,9 +8,10 @@ type DataBoxProps = {
     emoji: string;
     color: string;
     dailyValue: number;
+    countDuration: number;
 };
 
-export default function DataBox({ label, unit, amount, emoji, color, dailyValue }: DataBoxProps) {
+export default function DataBox({ label, unit, amount, emoji, color, dailyValue, countDuration }: DataBoxProps) {
     return (
         <View style={styles.boxContainer}>
             <View style={styles.boxContents}>
@@ -17,7 +19,7 @@ export default function DataBox({ label, unit, amount, emoji, color, dailyValue 
                     <View style={[styles.icon, { backgroundColor: color }]}><Text style={styles.iconText}>{emoji}</Text></View>
                     <View><Text style={styles.label}>{label}</Text></View>
                 </View>
-                <Text style={styles.amount}>{amount}{unit==='kcal' ? ' ' : ''}{unit}</Text>
+                <Text style={styles.amount}><CountUp isCounting end={amount} duration={countDuration} />{unit==='kcal' ? ' ' : ''}{unit}</Text>
                 {dailyValue > 0 ? <Text style={styles.dailyValue}>{dailyValue}% Daily Value</Text> : <View style={{height: 13}} />}
             </View>
         </View>

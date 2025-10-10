@@ -1,10 +1,11 @@
+import IntroScreen from '@/components/IntroScreen';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useFocusEffect } from '@react-navigation/native';
 import { BarcodeScanningResult, CameraType, CameraView, useCameraPermissions } from 'expo-camera';
 import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -26,12 +27,7 @@ export default function App() {
 
   if (!permission.granted) {
     // Camera permissions are not granted yet.
-    return (
-      <View style={styles.container}>
-        <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
-      </View>
-    );
+    return <IntroScreen requestPermission={requestPermission} />;
   }
 
   function toggleCameraFacing() {

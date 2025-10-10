@@ -50,6 +50,8 @@ const styles = StyleSheet.create({
         padding: 7,
         alignItems: 'center',
         justifyContent: 'center',
+        width: 40,
+        height: 40,
     },
     iconText: {
         fontSize: 20,

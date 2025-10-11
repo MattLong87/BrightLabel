@@ -1,26 +1,34 @@
 import Logo from "@/components/Logo";
 import PrimaryButton from "@/components/PrimaryButton";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function IntroScreen({ requestPermission }: { requestPermission: () => void }) {
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Logo />
-            <View style={styles.imageContainer}><Image source={require('@/assets/images/phone-line-drawing.png')} style={styles.image} /></View>
-            <Text style={styles.description}>BrightLabel uses your phone's camera to scan barcodes on food packages and instantly show you clear nutrition facts.</Text>
+            <View style={styles.centerContainer}>
+                <View style={styles.imageContainer}><Image source={require('@/assets/images/phone-line-drawing.png')} style={styles.image} /></View>
+                <Text style={styles.description}>BrightLabel uses your phone's camera to scan barcodes on food packages and instantly show you clear nutrition facts.</Text>
+            </View>
             <View style={styles.buttonContainer}><PrimaryButton title="Get Started" onPress={requestPermission} /></View>
-        </View>
+        </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        gap: 40,
-        padding: 20,
+        paddingHorizontal: 20,
+        paddingVertical: 40,
         backgroundColor: '#fff'
+    },
+    centerContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 10,
     },
     imageContainer: {
         alignItems: 'center',
@@ -39,9 +47,6 @@ const styles = StyleSheet.create({
         textAlign: 'justify',
     },
     buttonContainer: {
-        position: 'absolute',
-        bottom: 32,
-        left: 32,
-        right: 32,
+        width: '100%',
     },
 });

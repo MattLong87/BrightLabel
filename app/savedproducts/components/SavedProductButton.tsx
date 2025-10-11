@@ -16,7 +16,8 @@ export default function SavedProductButton({ product, onPress }: { product: any,
 const styles = StyleSheet.create({
     button: {
         paddingVertical: 12,
-        paddingHorizontal: 20,
+        paddingLeft: 18,
+        paddingRight: 12,
         borderRadius: 24,
         backgroundColor: '#fff6d2',
         flexDirection: 'row',
@@ -26,14 +27,16 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         gap: 0,
+        flex: 1,
     },
     brandName: {
         fontSize: 12,
         fontWeight: 'bold',
     },
     productName: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
+        flexWrap: 'wrap',
     },
     iconContainer: {
         width: 46,

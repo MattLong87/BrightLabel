@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DailyValue from './components/DailyValue';
 import DataBox from './components/DataBox';
@@ -50,7 +50,7 @@ export default function DetailsScreen() {
 
             // Remove product if already saved (by upc)
             savedProductsArray = savedProductsArray.filter((prod: any) => prod.upc !== productData.upc);
-            
+
             savedProductsArray.push(productData);
             await AsyncStorage.setItem('savedProducts', JSON.stringify(savedProductsArray));
             router.push('/savedproducts');
@@ -59,6 +59,20 @@ export default function DetailsScreen() {
             console.log(e);
         }
     };
+
+    async function deleteProduct() {
+        try {
+            const savedProducts = await AsyncStorage.getItem('savedProducts');
+            let savedProductsArray = savedProducts ? JSON.parse(savedProducts) : [];
+            savedProductsArray = savedProductsArray.filter((prod: any) => prod.upc !== productData.upc);
+        }
+        catch (e) {
+            console.log(e);
+        }
+        finally {
+            router.push('/savedproducts');
+        }
+    }
 
 if (loading) {
     return <ProductInfoSkeleton />;
@@ -129,7 +143,10 @@ return (
                                     ))}
                                 </View>
                             </View>}
-                            <PrimaryButton title="Save Product" onPress={saveProduct} />
+                            <View style={styles.buttonContainer}>
+                              <PrimaryButton title="Close" onPress={saveProduct} />
+                              <TouchableOpacity style={styles.deleteProductButton} onPress={deleteProduct}><Text style={styles.deleteProductButtonText}>Delete Product</Text></TouchableOpacity>
+                            </View>
                         </View>
                     </SafeAreaView>
                 </ScrollView>
@@ -241,5 +258,18 @@ const styles = StyleSheet.create({
     vitaminsContainer: {
         gap: 10,
         marginTop: 10,
+    },
+    buttonContainer: {
+        gap: 10,
+    },
+    deleteProductButton: {
+        padding: 14,
+        borderRadius: 24,
+    },
+    deleteProductButtonText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: '#000',
     },
 });

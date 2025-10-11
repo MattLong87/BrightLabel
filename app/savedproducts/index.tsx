@@ -1,8 +1,11 @@
 import Logo from "@/components/Logo";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import SavedProductButton from "./components/SavedProductButton";
 
 export default function SavedProducts() {
     const [savedProducts, setSavedProducts] = useState<any[]>([]);
@@ -15,16 +18,27 @@ export default function SavedProducts() {
         fetchSavedProducts();
     }, []);
 
-    console.log(savedProducts);
+    function handleSavedProductClick(upc: string) {
+        router.push(`/productinfo/${upc}`);
+    }
 
     return (
-        <View>
+        <View style={{backgroundColor: '#ffffff', flex: 1}}>
             <SafeAreaView>
                 <View style={styles.header}>
-                <Logo />
+                    <Logo />
                 </View>
-                <ScrollView><Text>Saved Products</Text></ScrollView>
+                <ScrollView>
+                    <View style={styles.savedProductsContainer}>
+                        {savedProducts.reverse().map((product, i) => (
+                            <SavedProductButton key={i} product={product} onPress={() => handleSavedProductClick(product.upc)} />
+                        ))}
+                    </View>
+                </ScrollView>
             </SafeAreaView>
+            <TouchableOpacity style={styles.scanButton} onPress={() => router.push('/')}>
+                <MaterialCommunityIcons name="plus" size={36} color="#fff" />
+            </TouchableOpacity>
         </View>
     )
 }
@@ -35,5 +49,21 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 20,
+        marginBottom: 20,
+    },
+    savedProductsContainer: {
+        gap: 16,
+        paddingHorizontal: 20,
+    },
+    scanButton: {
+        position: 'absolute',
+        bottom: 32,
+        right: 32,
+        backgroundColor: '#efbd32',
+        borderRadius: 999,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 64,
+        height: 64,
     },
 });

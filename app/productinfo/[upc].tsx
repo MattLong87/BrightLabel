@@ -46,7 +46,11 @@ export default function DetailsScreen() {
     async function saveProduct() {
         try {
             const savedProducts = await AsyncStorage.getItem('savedProducts');
-            const savedProductsArray = savedProducts ? JSON.parse(savedProducts) : [];
+            let savedProductsArray = savedProducts ? JSON.parse(savedProducts) : [];
+
+            // Remove product if already saved (by upc)
+            savedProductsArray = savedProductsArray.filter((prod: any) => prod.upc !== productData.upc);
+            
             savedProductsArray.push(productData);
             await AsyncStorage.setItem('savedProducts', JSON.stringify(savedProductsArray));
             router.push('/savedproducts');

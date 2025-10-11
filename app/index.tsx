@@ -119,10 +119,11 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
     borderRadius: 100,
     borderWidth: 1,
     borderColor: '#e4e4e4',
+    width: 64,
+    height: 64,
   },
   buttonActive: {
     backgroundColor: 'rgba(255, 255, 255, 0.5)',

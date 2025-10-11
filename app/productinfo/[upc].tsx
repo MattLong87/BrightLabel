@@ -32,7 +32,9 @@ export default function DetailsScreen() {
                 }
 
                 const data = await response.json();
-                setProductData(parseDataFromApi(data));
+                const productData = parseDataFromApi(data);
+                setProductData(productData);
+                saveProduct(productData);
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'An error occurred');
             } finally {
@@ -43,7 +45,7 @@ export default function DetailsScreen() {
         fetchProductData();
     }, [upc]);
 
-    async function saveProduct() {
+    async function saveProduct(productData: any) {
         try {
             const savedProducts = await AsyncStorage.getItem('savedProducts');
             let savedProductsArray = savedProducts ? JSON.parse(savedProducts) : [];
@@ -53,7 +55,6 @@ export default function DetailsScreen() {
 
             savedProductsArray.push(productData);
             await AsyncStorage.setItem('savedProducts', JSON.stringify(savedProductsArray));
-            router.push('/savedproducts');
         } catch (e) {
             // saving error
             console.log(e);
@@ -65,6 +66,7 @@ export default function DetailsScreen() {
             const savedProducts = await AsyncStorage.getItem('savedProducts');
             let savedProductsArray = savedProducts ? JSON.parse(savedProducts) : [];
             savedProductsArray = savedProductsArray.filter((prod: any) => prod.upc !== productData.upc);
+            await AsyncStorage.setItem('savedProducts', JSON.stringify(savedProductsArray));
         }
         catch (e) {
             console.log(e);
@@ -144,7 +146,7 @@ return (
                                 </View>
                             </View>}
                             <View style={styles.buttonContainer}>
-                              <PrimaryButton title="Close" onPress={saveProduct} />
+                              <PrimaryButton title="Close" onPress={() => router.push('/savedproducts')} />
                               <TouchableOpacity style={styles.deleteProductButton} onPress={deleteProduct}><Text style={styles.deleteProductButtonText}>Delete Product</Text></TouchableOpacity>
                             </View>
                         </View>

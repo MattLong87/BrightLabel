@@ -2,6 +2,10 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function SavedProductButton({ product, onPress }: { product: any, onPress: () => void }) {
+    if (!product) {
+        return null;
+    }
+    
     return (
         <TouchableOpacity onPress={onPress} style={styles.button}>
             <View style={styles.textContainer}>

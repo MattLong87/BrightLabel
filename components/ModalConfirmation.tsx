@@ -1,11 +1,10 @@
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-
 export default function ModalConfirmation({ title, primaryButtonText, cancelButtonText, onPress, onCancel, visible }: { title: string, primaryButtonText: string, cancelButtonText: string, onPress: () => void, onCancel: () => void, visible: boolean }) {
     return(
         <Modal visible={visible} transparent={true} animationType="fade">
-        <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
+        <TouchableOpacity style={styles.modalContainer} onPress={onCancel} activeOpacity={1}>
+            <TouchableOpacity style={styles.modalContent} onPress={(e) => e.stopPropagation()} activeOpacity={1}>
                 <Text style={styles.modalText}>{title}</Text>
                 <View style={styles.modalButtonContainer}>
                     <TouchableOpacity style={styles.cancelButton} onPress={() => onCancel()}>
@@ -15,8 +14,8 @@ export default function ModalConfirmation({ title, primaryButtonText, cancelButt
                         <Text style={styles.primaryButtonText}>{primaryButtonText}</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
-        </View>
+            </TouchableOpacity>
+        </TouchableOpacity>
     </Modal>
     )
 }

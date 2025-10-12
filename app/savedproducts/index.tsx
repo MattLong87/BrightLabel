@@ -30,8 +30,6 @@ export default function SavedProducts() {
         setSavedProducts([]);
     }
 
-
-
     return (
         <View style={{ backgroundColor: '#ffffff', flex: 1 }}>
             <SafeAreaView>
@@ -57,10 +55,17 @@ export default function SavedProducts() {
                     )}
                 </ScrollView>
             </SafeAreaView>
-            <TouchableOpacity style={styles.scanButton} onPress={() => router.push('/')}>
+            <TouchableOpacity style={styles.scanButton} onPress={() => router.push('/camera')}>
                 <MaterialCommunityIcons name="plus" size={36} color="#fff" />
             </TouchableOpacity>
-            <ModalConfirmation title="Clear all saved products? This action cannot be undone." primaryButtonText="Clear" cancelButtonText="Cancel" onPress={() => handleClearProducts()} onCancel={() => setClearModalVisible(false)} visible={clearModalVisible} />
+            <ModalConfirmation
+                title="Clear all saved products? This action cannot be undone."
+                primaryButtonText="Clear"
+                cancelButtonText="Cancel"
+                onPress={() => handleClearProducts()}
+                onCancel={() => setClearModalVisible(false)}
+                visible={clearModalVisible}
+            />
         </View>
     )
 }

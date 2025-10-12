@@ -36,6 +36,8 @@ After a quick feasibility check to confirm that APIs and libraries existed to me
 ### Product Info Screen
 One of the first screens I began development on was the Product Info screen, since I knew it would need the most design work. I created a more detailed wireframe of this screen and scaffolded an initial version of it in the app. I wasn't sure how best to display the nutrition data in a clean and appealing way, so I browsed Dribbble for other nutrition apps to use as inspiration. This led me to the design of the 2x2 grid of macros with emoji icons, which appears in the final design.
 
+<img src="https://raw.githubusercontent.com/MattLong87/BrightLabel/refs/heads/main/assets/images/design/details_evolution.png" width="450">
+
 ### API Challenges
 Finding a reliable API to source data for this project was the biggest challenge. I initially attempted to use the [USDA FoodData Central API](https://fdc.nal.usda.gov/api-guide), but I found its data to be very inconsistent, both in ability to look up products by UPC and in the format of the data returned. Ultimately, I turned to the [OpenFoodFacts API](https://openfoodfacts.github.io/openfoodfacts-server/api/), which seemed to more consistently return appropriate product information. However, I have noticed issues with this dataset too: sometimes its data is inconsistent with the Nutrition Facts printed on a product, and it often lacks vitamin information. In my search, I noticed that there are several paid API options that offer this data, and I believe there would be a good business case to consider exploring those for an actual product.
 

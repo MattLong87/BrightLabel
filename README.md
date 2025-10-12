@@ -42,11 +42,12 @@ Finding a reliable API to source data for this project was the biggest challenge
 In addition to the API challenges discussed above, identifying the "top three" vitamins was also an ambiguity. I decided to calculate the percent daily value for each using the [FDA's recommendations](https://www.fda.gov/food/nutrition-facts-label/daily-value-nutrition-and-supplement-facts-labels), and display the three vitamins with highest percentages. This also required converting between various units to compare the values provided by the API to the ones given by the FDA. I note that the brief specified that vitamin amounts should be displayed in milligrams, so I used that unit even for vitamins typically measured in much smaller units, which leads to some very small numbers being displayed.
 
 ### Final Details
-Once the basic functionality of the app was implemented, I reviewed each screen and added details to cover various states. For example:
+Once the basic functionality of the app was implemented, I reviewed each screen and added details to cover various states and user flows. For example:
 - Loading/"skeleton" screen while product info is fetched
 - Error message if product is not found
 - Informative message when Saved Products screen is empty
-- Ability to exit the camera screen without scanning a barcode
+- Ability to delete a scanned product
+- Button to exit the camera screen without scanning a barcode
 
 ### Future Improvements
 - Experiment with using on-device AI to dynamically assign an emoji/icon to scanned foods (for example, 🥫 when a can of soup is scanned)

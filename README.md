@@ -1,50 +1,54 @@
-# Welcome to your Expo app 👋
+# 🟨 BrightLabel
+BrightLabel is a React Native mobile app built with Expo that allows you to uses your phone's camera to scan barcodes on packaged foods and display (and save) nutrition information.
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Installation
+1. Clone this repository
+   ```bash
+   git clone https://github.com/MattLong87/BrightLabel.git
+   cd BrightLabel
+   ```
 
-## Get started
-
-1. Install dependencies
+2. Install dependencies
 
    ```bash
    npm install
    ```
 
-2. Start the app
+3. Start the app
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+4. Run on your preferred platform:
+   - **iOS**: Press `i` in the terminal or scan the QR code with your iPhone
+   - **Android**: Press `a` in the terminal or scan the QR code with your Android device
+   - **Web**: Press `w` in the terminal
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Design and Development
+### Wireframing
+After a quick feasibility check to confirm that APIs and libraries existed to meet the requirements of the app, I created an initial user flow diagram to identify what screens would be needed and how users would navigate between them:
+- **Camera** screen, to scan barcodes
+- **Product Info** screen, listing details about a product
+- **Saved Products** screen, displaying a list of all products that had been scanned. This screen was not part of the brief, but I planned to add it to increase the functionality of the app with minimal added complexity.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Product Info Screen
+One of the first screens I began development on was the Product Info screen, since I knew it would need the most design work. I created a more detailed wireframe of this screen and scaffolded an initial version of it in the app. I wasn't sure how best to display the nutrition data in a clean and appealing way, so I browsed Dribbble for other nutrition apps to use as inspiration. This led me to the design of the 2x2 grid of macros with emoji icons, which appears in the final design.
 
-## Get a fresh project
+### API Challenges
+Finding a reliable API to source data for this project was the biggest challenge. I initially attempted to use the [USDA FoodData Central API](https://fdc.nal.usda.gov/api-guide), but I found its data to be very inconsistent, both in ability to look up products by UPC and in the format of the data returned. Ultimately, I turned to the [OpenFoodFacts API](https://openfoodfacts.github.io/openfoodfacts-server/api/), which seemed to more consistently return appropriate product information. However, I have noticed issues with this dataset too: sometimes its data is inconsistent with the Nutrition Facts printed on a product, and it often lacks vitamin information. In my search, I noticed that there are several paid API options that offer this data, and I believe there would be a good business case to consider exploring those for an actual product.
 
-When you're ready, run:
+### Vitamins
+In addition to the API challenges discussed above, identifying the "top three" vitamins was also an ambiguity. I decided to calculate the percent daily value for each using the [FDA's recommendations](https://www.fda.gov/food/nutrition-facts-label/daily-value-nutrition-and-supplement-facts-labels), and display the three vitamins with highest percentages. This also required converting between various units to compare the values provided by the API to the ones given by the FDA. I note that the brief specified that vitamin amounts should be displayed in milligrams, so I used that unit even for vitamins typically measured in much smaller units, which leads to some very small numbers being displayed.
 
-```bash
-npm run reset-project
-```
+### Final Details
+Once the basic functionality of the app was implemented, I reviewed each screen and added details to cover various states. For example:
+- Loading/"skeleton" screen while product info is fetched
+- Error message if product is not found
+- Informative message when Saved Products screen is empty
+- Ability to exit the camera screen without scanning a barcode
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Future Improvements
+- Experiment with using on-device AI to dynamically assign an emoji/icon to scanned foods (for example, 🥫 when a can of soup is scanned)
+- Respect dark mode settings with useColorScheme()
+- Search and filter options for the Saved Products screen

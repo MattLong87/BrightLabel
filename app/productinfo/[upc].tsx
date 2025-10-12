@@ -43,7 +43,7 @@ export default function DetailsScreen() {
           }
 
           const data = await response.json();
-          const productData = parseDataFromApi(data);
+          const productData = {...parseDataFromApi(data), upc};
           setProductData(productData);
           saveProduct(productData);
         }
@@ -108,7 +108,7 @@ export default function DetailsScreen() {
           <PrimaryButton title="Scan Another Product" onPress={() => {
             setError(null);
             setLoading(true);
-            router.push('/');
+            router.push('/camera');
           }} />
         </View>
       </View>

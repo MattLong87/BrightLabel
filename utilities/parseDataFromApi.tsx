@@ -75,7 +75,6 @@ export default function parseDataFromApi(data: any) {
         fatUnit: nutrients['fat_unit'],
         fatDailyValue: fatDailyValue,
         topVitamins: topVitamins,
-        upc: product.code,
     };
 
     return result;

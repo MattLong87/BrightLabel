@@ -6,6 +6,7 @@ import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -55,14 +56,21 @@ export default function App() {
     <View style={styles.container}>
       <CameraView style={styles.camera} facing={facing} barcodeScannerSettings={{ barcodeTypes: ["upc_a", "ean13"], }} onBarcodeScanned={onBarcodeScanned} enableTorch={light} />
       <View style={styles.guideBoxContainer}><View style={styles.guideBox} /><Text style={styles.guideBoxText}>Scan a barcode</Text></View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={[styles.button, facing === 'front' && styles.buttonActive]} onPress={toggleCameraFacing}>
-          <MaterialCommunityIcons name="camera-flip" size={30} color="#e4e4e4" />
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, light && styles.buttonActive]} onPress={toggleCameraLight}>
-          <MaterialCommunityIcons name="flashlight" size={30} color="#e4e4e4" />
-        </TouchableOpacity>
-      </View>
+      <SafeAreaView style={styles.buttonsOverlay}>
+        <View style={styles.topButtonsContainer}>
+          <TouchableOpacity style={styles.button} onPress={() => router.push('/savedproducts')}>
+            <MaterialCommunityIcons name="close" size={30} color="#e4e4e4" />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.bottomButtonsContainer}>
+          <TouchableOpacity style={[styles.button, facing === 'front' && styles.buttonActive]} onPress={toggleCameraFacing}>
+            <MaterialCommunityIcons name="camera-flip" size={30} color="#e4e4e4" />
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.button, light && styles.buttonActive]} onPress={toggleCameraLight}>
+            <MaterialCommunityIcons name="flashlight" size={30} color="#e4e4e4" />
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
     </View>
   );
 }
@@ -107,14 +115,24 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     borderRadius: 40,
   },
-  buttonContainer: {
+  buttonsOverlay: {
     position: 'absolute',
-    bottom: 32,
-    flexDirection: 'row',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     backgroundColor: 'transparent',
-    width: '100%',
-    paddingHorizontal: 32,
     justifyContent: 'space-between',
+  },
+  topButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 32,
+  },
+  bottomButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 32,
   },
   button: {
     alignItems: 'center',

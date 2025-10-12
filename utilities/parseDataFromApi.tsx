@@ -39,26 +39,58 @@ export default function parseDataFromApi(data: any) {
         return amount * 0.001;
     }
 
+    function formatVitaminAmount(amount: number): number {
+        // For very small decimal numbers, show only 2 significant digits after leading zeros
+        // For scientific notation, keep as is
+        if (amount < 0.001 && amount > 0) {
+            // Convert to string to count leading zeros
+            const str = amount.toString();
+            if (str.includes('e')) {
+                // Round scientific notation coefficient to 2 decimal places
+                const parts = str.split('e');
+                const coefficient = parseFloat(parts[0]);
+                const exponent = parts[1];
+                const roundedCoefficient = Math.round(coefficient * 100) / 100;
+                return parseFloat(`${roundedCoefficient}e${exponent}`);
+            } else {
+                // For small decimals like 0.00000512820512820513
+                // Find the position after the decimal point and leading zeros
+                const decimalPart = str.split('.')[1];
+                if (decimalPart) {
+                    const leadingZerosMatch = decimalPart.match(/^0*/);
+                    if (leadingZerosMatch) {
+                        const leadingZeros = leadingZerosMatch[0].length;
+                        const significantDigits = decimalPart.substring(leadingZeros, leadingZeros + 2);
+                        return parseFloat(`0.${'0'.repeat(leadingZeros)}${significantDigits}`);
+                    }
+                }
+            }
+        }
+        // For larger numbers, clean up floating point precision issues
+        return parseFloat(amount.toPrecision(15));
+    }
+
     const vitaminInfo = vitaminNames.map((name) => {
         const vitaminUnit = nutrients[name + '_unit'];
         if(vitaminUnit === 'IU'){
             nutrients[name + '_serving'] = convertMcgToMg(convertIUtoMcg(nutrients[name + '_serving']));
             nutrients[name + '_unit'] = 'mg';
         }
-        if(vitaminUnit === 'µg'){
+        if(vitaminUnit === 'µg' || vitaminUnit === 'mcg'){
             nutrients[name + '_serving'] = convertMcgToMg(nutrients[name + '_serving']);
             nutrients[name + '_unit'] = 'mg';
         }
+        const formattedAmount = formatVitaminAmount(nutrients[name + '_serving']);
         return {
             name: 'Vitamin ' + name.split('-')[1].toUpperCase(),
-            amountPerServing: nutrients[name + '_serving'],
+            amountPerServing: formattedAmount,
             unit: nutrients[name + '_unit'],
-            percentageDailyValue: 100 * nutrients[name + '_serving'] / targetDailyValues[name],
+            percentageDailyValue: 100 * formattedAmount / targetDailyValues[name],
         }
     });
 
-    //I'm considering "top vitamins" to be vitamins that have the highest percentage of the daily value, with a threshold of .01%
-    const topVitamins = vitaminInfo.filter((vitamin) => vitamin.percentageDailyValue > .01).sort((a, b) => b.percentageDailyValue - a.percentageDailyValue).slice(0, 3);
+    //I'm considering "top vitamins" to be vitamins that have the highest percentage of the daily value
+    const topVitamins = vitaminInfo.filter((vitamin) => vitamin.percentageDailyValue > 0).sort((a, b) => b.percentageDailyValue - a.percentageDailyValue).slice(0, 3);
 
     const result = {
         brand: product.brands ? product.brands.split(',')[0] : '',

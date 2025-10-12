@@ -144,7 +144,10 @@ export default function DetailsScreen() {
                   <DataBox label="Fat" unit={productData.fatUnit} amount={productData.fatPerServing} emoji="🥑" color="#e6f6e6" dailyValue={productData.fatDailyValue} countDuration={4} />
                 </View>
                 {productData.topVitamins.length > 0 && <View>
-                  <Text style={styles.brand}>Top Vitamins</Text>
+                  <View style={styles.vitaminsHeaderContainer}>
+                    <Text style={styles.brand}>Top Vitamins</Text>
+                    <Text style={styles.vitaminsDisclaimer}>Vitamin data may be incomplete</Text>
+                  </View>
                   <View style={styles.vitaminsContainer}>
                     {productData.topVitamins.map((vitamin: any, index: number) => (
                       <View key={index} style={styles.horizontalInfoContainer}>
@@ -269,9 +272,18 @@ const styles = StyleSheet.create({
     marginLeft: -5,
     marginRight: -5,
   },
+  vitaminsHeaderContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   vitaminsContainer: {
     gap: 10,
     marginTop: 10,
+  },
+  vitaminsDisclaimer: {
+    fontSize: 10,
+    fontStyle: 'italic',
   },
   buttonContainer: {
     gap: 10,

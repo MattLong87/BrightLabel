@@ -21,7 +21,7 @@ export default function DataBox({ label, unit, amount, emoji, color, dailyValue,
                     <View><Text style={styles.label}>{label}</Text></View>
                 </View>
                 <View style={styles.amountContainer}>
-                    <Text style={styles.amount}><CountUp isCounting end={amount} duration={countDuration} />{unit === 'kcal' ? ' ' : ''}{unit}</Text>
+                    <Text style={styles.amount}><CountUp isCounting end={Math.round(amount)} duration={countDuration} />{unit === 'kcal' ? ' ' : ''}{unit}</Text>
                     <DailyValue dailyValue={dailyValue} />
                 </View>
             </View>

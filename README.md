@@ -56,6 +56,9 @@ Once the basic functionality of the app was implemented, I reviewed each screen 
 - Ability to delete a scanned product
 - Button to exit the camera screen without scanning a barcode
 
+### Testing
+There is some very basic unit test coverage for the parseDataFromApi utility. Further tests could be added for this function, the data fetching function in [upc].tsx, and many other components app-wide.
+
 ### Future Improvements
 - Experiment with using on-device AI to dynamically assign an emoji/icon to scanned foods (for example, 🥫 when a can of soup is scanned)
 - Respect dark mode settings with useColorScheme()

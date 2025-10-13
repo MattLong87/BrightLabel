@@ -11,13 +11,21 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [light, setLight] = useState<boolean>(false);
+  const [cameraActive, setCameraActive] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
   const barcodeDetected = useRef<boolean>(false);
   const router = useRouter();
 
   useFocusEffect(
     useCallback(() => {
+      // Start camera when screen gains focus
+      setCameraActive(true);
       barcodeDetected.current = false;
+
+      return () => {
+        // Stop camera when screen loses focus
+        setCameraActive(false);
+      };
     }, [])
   );
 
@@ -54,7 +62,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing} barcodeScannerSettings={{ barcodeTypes: ["upc_a", "ean13"], }} onBarcodeScanned={onBarcodeScanned} enableTorch={light} />
+      {cameraActive && <CameraView style={styles.camera} facing={facing} barcodeScannerSettings={{ barcodeTypes: ["upc_a", "ean13"], }} onBarcodeScanned={onBarcodeScanned} enableTorch={light} />}
       <View style={styles.guideBoxContainer}><View style={styles.guideBox} /><Text style={styles.guideBoxText}>Scan a barcode</Text></View>
       <SafeAreaView style={styles.buttonsOverlay}>
         <View style={styles.topButtonsContainer}>
@@ -79,6 +87,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: '#000',
   },
   message: {
     textAlign: 'center',

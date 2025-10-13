@@ -1,5 +1,5 @@
 # 🟨 BrightLabel
-BrightLabel is a React Native mobile app built with Expo that allows you to uses your phone's camera to scan barcodes on packaged foods and display (and save) nutrition information.
+BrightLabel is a React Native mobile app built with Expo that allows you to use your phone's camera to scan barcodes on packaged foods and display (and save) nutrition information.
 
 ## Installation
 1. Clone this repository
@@ -52,14 +52,14 @@ In addition to the API challenges discussed above, identifying the "top three" v
 Once the basic functionality of the app was implemented, I reviewed each screen and added details to cover various states and user flows. For example:
 - Loading/"skeleton" screen while product info is fetched
 - Error message if product is not found
-- Informative message when Saved Products screen is empty
+- Clear empty state message when no saved products
 - Ability to delete a scanned product
 - Button to exit the camera screen without scanning a barcode
 
 ### Testing
-There is some very basic unit test coverage for the parseDataFromApi utility. Further tests could be added for this function, the data fetching function in [upc].tsx, and many other components app-wide.
+There is some initial unit test coverage for the parseDataFromApi utility, with clear opportunity to expand. Further tests could be added for this function, the data fetching function in [upc].tsx, and many other components app-wide.
 
 ### Future Improvements
-- Experiment with using on-device AI to dynamically assign an emoji/icon to scanned foods (for example, 🥫 when a can of soup is scanned)
 - Respect dark mode settings with useColorScheme()
 - Search and filter options for the Saved Products screen
+- Experiment with using on-device AI to dynamically assign an emoji/icon to scanned foods (for example, 🥫 when a can of soup is scanned)

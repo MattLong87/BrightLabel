@@ -1,7 +1,14 @@
 # 🟨 BrightLabel
-BrightLabel is a React Native mobile app built with Expo that allows you to use your phone's camera to scan barcodes on packaged foods and display (and save) nutrition information.
+BrightLabel is a React Native mobile app built with Expo that uses your phone's camera to scan barcodes on packaged foods and display (and save) nutrition information.
 
-## Installation
+<img src="https://raw.githubusercontent.com/MattLong87/BrightLabel/refs/heads/main/assets/images/design/screenshots.png" width="450">
+
+## Run Via Expo Go
+Download the Expo Go mobile app and scan the below QR code to load a preview version of the app:
+
+<img src="https://raw.githubusercontent.com/MattLong87/BrightLabel/refs/heads/main/assets/images/design/qr_code.png" width="250">
+
+## Local Installation
 1. Clone this repository
    ```bash
    git clone https://github.com/MattLong87/BrightLabel.git
@@ -27,7 +34,7 @@ BrightLabel is a React Native mobile app built with Expo that allows you to use 
 
 ## Design and Development
 ### Wireframing
-After a quick feasibility check to confirm that APIs and libraries existed to meet the requirements of the app, I created an initial user flow diagram to identify what screens would be needed and how users would navigate between them:
+After a quick feasibility check to confirm that APIs and libraries existed to meet the goals of the app, I created an initial user flow diagram to identify what screens would be needed and how users would navigate between them:
 - **Camera** screen, to scan barcodes
 - **Product Info** screen, listing details about a product
 - **Saved Products** screen, displaying a list of all products that had been scanned. This screen was not part of the brief, but I planned to add it to increase the functionality of the app with minimal added complexity.
@@ -46,7 +53,7 @@ If you have difficulty finding a product with vitamin data to test the app, you 
 <img src="https://raw.githubusercontent.com/MattLong87/BrightLabel/refs/heads/main/assets/images/design/clif_bar.png" width="250">
 
 ### Vitamins
-In addition to the API challenges discussed above, identifying the "top three" vitamins was also an ambiguity. I decided to calculate the percent daily value for each using the [FDA's recommendations](https://www.fda.gov/food/nutrition-facts-label/daily-value-nutrition-and-supplement-facts-labels), and display the three vitamins with highest percentages. This also required converting between various units to compare the values provided by the API to the ones given by the FDA. I note that the brief specified that vitamin amounts should be displayed in milligrams, so I used that unit even for vitamins typically measured in much smaller units, which leads to some very small numbers being displayed. I'm also only displaying the %DV if it's >.01%, which it often isn't, in my experience. However, it is displayed for the Clif Bar product shown above.
+In addition to the API challenges discussed above, identifying the "top vitamins" to display was also an ambiguity. I decided to calculate the percent daily value for each using the [FDA's recommendations](https://www.fda.gov/food/nutrition-facts-label/daily-value-nutrition-and-supplement-facts-labels), and display the three vitamins with highest percentages. This also required converting between various units to compare the values provided by the API to the ones given by the FDA. I note that the brief specified that vitamin amounts should be displayed in milligrams, so I used that unit even for vitamins typically measured in much smaller units, which leads to some very small numbers being displayed. I'm also only displaying the %DV if it's >.01%, which it often isn't, in my experience. However, it is displayed for the Clif Bar product shown above.
 
 ### Final Details
 Once the basic functionality of the app was implemented, I reviewed each screen and added details to cover various states and user flows. For example:

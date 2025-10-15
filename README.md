@@ -1,5 +1,5 @@
 # 🟨 BrightLabel
-BrightLabel is a React Native mobile app built with Expo that uses your phone's camera to scan barcodes on packaged foods and display (and save) nutrition information.
+BrightLabel is a React Native mobile app built with Expo that uses your phone's camera to scan barcodes on packaged foods to display and save nutrition information.
 
 <img src="https://raw.githubusercontent.com/MattLong87/BrightLabel/refs/heads/main/assets/images/design/screenshots.png" width="450">
 

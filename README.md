@@ -4,7 +4,7 @@ BrightLabel is a React Native mobile app built with Expo that uses your phone's 
 <img src="https://raw.githubusercontent.com/MattLong87/BrightLabel/refs/heads/main/assets/images/design/screenshots.png" width="450">
 
 ## Run Via Expo Go
-Download the Expo Go mobile app and scan the below QR code to load a preview version of the app:
+Download the Expo Go mobile app and scan the QR code below to load a preview version of the app:
 
 <img src="https://raw.githubusercontent.com/MattLong87/BrightLabel/refs/heads/main/assets/images/design/qr_code.png" width="250">
 

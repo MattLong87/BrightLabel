@@ -37,7 +37,7 @@ Download the Expo Go mobile app and scan the QR code below to load a preview ver
 After a quick feasibility check to confirm that APIs and libraries existed to meet the goals of the app, I created an initial user flow diagram to identify what screens would be needed and how users would navigate between them:
 - **Camera** screen, to scan barcodes
 - **Product Info** screen, listing details about a product
-- **Saved Products** screen, displaying a list of all products that had been scanned. This screen was not part of the brief, but I planned to add it to increase the functionality of the app with minimal added complexity.
+- **Saved Products** screen, displaying a list of all products that had been scanned.
 <img src="https://raw.githubusercontent.com/MattLong87/BrightLabel/refs/heads/main/assets/images/design/user_flow.jpg" width="250">
 
 ### Product Info Screen
